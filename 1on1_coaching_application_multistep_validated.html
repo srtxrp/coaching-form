@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>1-on-1 Coaching Application</title>
+    <style>
+        body {
+            background-color: #000;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+        }
+        .form-container {
+            max-width: 500px;
+            margin: auto;
+        }
+        .form-step {
+            display: none;
+        }
+        .form-step.active {
+            display: block;
+        }
+        label {
+            display: block;
+            margin: 20px 0 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            background-color: #1c1c1c;
+            color: white;
+            border: none;
+            border-bottom: 2px solid #444;
+        }
+        .options {
+            margin: 10px 0;
+        }
+        .option {
+            padding: 10px;
+            margin: 5px 0;
+            background-color: #1c1c1c;
+            border: 1px solid #444;
+            cursor: pointer;
+        }
+        .option:hover {
+            background-color: #333;
+        }
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007aff;
+            border: none;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .final-message {
+            text-align: center;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <form id="coachingForm">
+
+            <div class="form-step active">
+                <p>This application is for 1-on-1 coaching directly with me (including custom nutrition, workouts, weekly checkins & messenger chat). Only for people serious about changing their life and body.</p>
+                <label>First Name *</label>
+                <input type="text" name="firstName" required>
+                <label>Last Name *</label>
+                <input type="text" name="lastName" required>
+                <label>Phone Number *</label>
+                <input type="tel" name="phone" required>
+                <div class="buttons">
+                    <button type="button" onclick="nextStep()">OK</button>
+                </div>
+            </div>
+
+            <div class="form-step">
+                <label>Instagram Handle *</label>
+                <input type="text" name="instagram" placeholder="@yourhandle" required>
+                <div class="buttons">
+                    <button type="button" onclick="prevStep()">Back</button>
+                    <button type="button" onclick="nextStep()">OK</button>
+                </div>
+            </div>
+
+            <div class="form-step">
+                <label>What are your fitness and health goals over the next 90 days? *</label>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this)">Lose Fat</div>
+                    <div class="option" onclick="selectOption(this)">Build Muscle</div>
+                    <div class="option" onclick="selectOption(this)">Body Recomp (Lose Fat & Build Muscle)</div>
+                    <div class="option" onclick="selectOption(this)">Build healthier habits</div>
+                </div>
+                <input type="hidden" name="goal">
+                <div class="buttons">
+                    <button type="button" onclick="prevStep()">Back</button>
+                    <button type="button" onclick="nextStep()">OK</button>
+                </div>
+            </div>
+
+            <div class="form-step">
+                <label>How old are you? *</label>
+                <input type="number" name="age" required>
+                <div class="buttons">
+                    <button type="button" onclick="prevStep()">Back</button>
+                    <button type="button" onclick="nextStep()">OK</button>
+                </div>
+            </div>
+
+            <div class="form-step">
+                <label>Which city and country do you live in? *</label>
+                <input type="text" name="location" placeholder="Ex: Miami, US" required>
+                <div class="buttons">
+                    <button type="button" onclick="prevStep()">Back</button>
+                    <button type="button" onclick="nextStep()">OK</button>
+                </div>
+            </div>
+
+            <div class="form-step">
+                <label>Can you invest in your health right now? *</label>
+                <div class="options">
+                    <div class="option" onclick="selectOption(this)">Yes, I can invest if it's a perfect fit</div>
+                    <div class="option" onclick="selectOption(this)">No, I can't invest in my health right now</div>
+                </div>
+                <input type="hidden" name="investment">
+                <div class="buttons">
+                    <button type="button" onclick="prevStep()">Back</button>
+                    <button type="button" onclick="nextStep()">OK</button>
+                </div>
+            </div>
+
+            <div class="form-step final-message">
+                <p>I will contact you in the next 24-48 hours if you were selected for the program.<br>Keep an eye on your Instagram DMs :)</p>
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        const steps = document.querySelectorAll(".form-step");
+        let currentStep = 0;
+
+        function showStep(index) {
+            steps.forEach((step, i) => {
+                step.classList.toggle("active", i === index);
+            });
+        }
+
+        
+        function nextStep() {
+            const current = steps[currentStep];
+            const inputs = current.querySelectorAll("input[required]");
+            for (let input of inputs) {
+                if (!input.value.trim()) {
+                    input.style.borderBottom = "2px solid red";
+                    return;
+                } else {
+                    input.style.borderBottom = "2px solid #444";
+                }
+            }
+    
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+
+        function selectOption(element) {
+            const parent = element.parentNode;
+            const input = parent.nextElementSibling;
+            Array.from(parent.children).forEach(opt => opt.style.backgroundColor = '#1c1c1c');
+            element.style.backgroundColor = '#007aff';
+            input.value = element.innerText;
+        }
+
+        showStep(currentStep);
+    </script>
+</body>
+</html>
